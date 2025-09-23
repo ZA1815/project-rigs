@@ -20,7 +20,7 @@ class Comment(mongoengine.Document):
 class Rig(mongoengine.Document):
     title = mongoengine.StringField(required=True, max_length=200)
     image_url = mongoengine.StringField(required=True)
-    description = mongoengine.StringField(required=True, max_length=500)
+    description = mongoengine.StringField(max_length=500)
     author = mongoengine.ReferenceField(User, required=True)
     comments = mongoengine.ListField(mongoengine.ReferenceField(Comment))
     created_at = mongoengine.DateTimeField(default=datetime.utcnow)
