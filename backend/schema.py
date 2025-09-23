@@ -1,6 +1,6 @@
 import graphene
 from graphene_mongo import MongoengineObjectType
-from rigs.models import Rig as RigModel
+from rigs.models import Rig as RigModel, User as UserModel
 
 class RigType(MongoengineObjectType):
     class Meta:
@@ -17,4 +17,23 @@ class Query(graphene.ObjectType):
     def resolve_rig_by_id(root, info, id):
         return RigModel.objects.get(id=id)
 
-schema = graphene.Schema(query=Query)
+class CreateRig(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        description = graphene.String()
+        image_url = graphene.String(required=True)
+    
+    rig = graphene.Field(RigType)
+
+    def mutate(root, info, title, description, image_url):
+        author = UserModel.objects.first()
+        rig = RigModel(title=title, description=description, image_url=image_url, author=author)
+        rig.save()
+
+        return CreateRig(rig=rig)
+
+class Mutation(graphene.ObjectType):
+    create_rig = CreateRig.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)
