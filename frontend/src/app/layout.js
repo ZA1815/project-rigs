@@ -1,6 +1,5 @@
-import ThemeRegistry from "@/ThemeRegistry";
 import Navbar from "@/components/Navbar";
-import ApolloProvider from "@/components/ApolloProvider";
+import Providers from "@/components/Providers";
 
 export const metadata = {
   title: 'Project Rigs',
@@ -11,14 +10,12 @@ export default function RootLayout({children}) {
   return (
     <html lang="en">
       <body>
-        <ApolloProvider>
-          <ThemeRegistry>
-            <Navbar />
-            <main>
-              {children}
-            </main>
-          </ThemeRegistry>
-        </ApolloProvider>
+        <Providers>
+          <Navbar />
+          <main>
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
