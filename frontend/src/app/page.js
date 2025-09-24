@@ -1,8 +1,12 @@
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+
 export default function Homepage() {
   return (
-    <div>
+    <Box sx={{p: 4}}>
       <h1>Welcome to Project Rigs</h1>
       <p>This is the homepage.</p>
-    </div>
+      <Button variant="contained" color="primary">Example Button</Button>
+    </Box>
   )
 }
