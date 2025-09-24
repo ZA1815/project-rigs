@@ -1,4 +1,5 @@
 import ThemeRegistry from "@/ThemeRegistry";
+import Navbar from "@/app/components/Navbar";
 
 export const metadata = {
   title: 'Project Rigs',
@@ -10,7 +11,10 @@ export default function RootLayout({children}) {
     <html lang="en">
       <body>
         <ThemeRegistry>
-          {children}
+          <Navbar />
+          <main>
+            {children}
+          </main>
         </ThemeRegistry>
       </body>
     </html>
