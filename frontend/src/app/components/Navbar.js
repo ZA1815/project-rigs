@@ -17,12 +17,16 @@ export default function Navbar() {
                     </Link>
                 </Typography>
 
+                <Link href="/rigs/newrig" passHref>
+                    <Button variant="outlined" color="secondary" sx={{marginInlineEnd: '32px'}}>Create a new Rig</Button>
+                </Link>
+
                 <Box>
                     <Link href="/login" passHref>
-                        <Button variant="outlined" color="inherit" sx={{marginRight: '8px'}}>Login</Button>
+                        <Button variant="outlined" color="secondary" sx={{marginRight: '8px'}}>Login</Button>
                     </Link>
                     <Link href="/register" passHref>
-                        <Button variant="outlined" color="inherit">Register</Button>
+                        <Button variant="outlined" color="secondary">Register</Button>
                     </Link>
                 </Box>
             </Toolbar>
