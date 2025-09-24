@@ -1,4 +1,5 @@
 import graphene
+import graphql_jwt
 from graphene_mongo import MongoengineObjectType
 from rigs.models import Rig as RigModel, User as UserModel
 
@@ -25,8 +26,13 @@ class CreateRig(graphene.Mutation):
     
     rig = graphene.Field(RigType)
 
-    def mutate(root, info, title, description, image_url):
-        author = UserModel.objects.first()
+    @classmethod
+    def mutate(cls, root, info, title, description, image_url):
+        if not info.context.user.is_authenticated:
+            raise Exception("Authentication credentials were not provided")
+
+        author = info.context.user
+
         rig = RigModel(title=title, description=description, image_url=image_url, author=author)
         rig.save()
 
@@ -34,6 +40,9 @@ class CreateRig(graphene.Mutation):
 
 class Mutation(graphene.ObjectType):
     create_rig = CreateRig.Field()
+    token_auth = graphql_jwt.ObtainJSONWebToken.Field()
+    verify_token = graphql_jwt.Verify.Field()
+    refresh_token = graphql_jwt.Refresh.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutation)
