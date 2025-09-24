@@ -32,7 +32,7 @@ export default function Homepage() {
     <Box sx={{p: 4}}>
       <h1>All Rigs:</h1>
       {data.allRigs.map(rig => (
-        <RigCard key={rig.id} />
+        <RigCard key={rig.id} rig={rig}/>
       ))}
     </Box>
   )
