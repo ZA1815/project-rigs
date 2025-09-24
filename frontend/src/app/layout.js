@@ -1,5 +1,5 @@
 import ThemeRegistry from "@/ThemeRegistry";
-import Navbar from "@/app/components/Navbar";
+import Navbar from "@/components/Navbar";
 
 export const metadata = {
   title: 'Project Rigs',
