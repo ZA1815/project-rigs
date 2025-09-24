@@ -1,12 +1,37 @@
 import mongoengine
 from datetime import datetime
 
-# Create your models here.
-
 class User(mongoengine.Document):
     username = mongoengine.StringField(required=True, unique=True)
     email = mongoengine.StringField(required=True, unique=True)
     password = mongoengine.StringField(required=True)
+    is_active = mongoengine.BooleanField(default=True)
+
+    USERNAME_FIELD = ['username']
+    REQUIRED_FIELDS = ['email']
+
+    @property
+    def pk(self):
+        return str(self.id)
+
+    def get_username(self):
+        return self.username
+
+    @property
+    def is_anonymous(self):
+        return False
+
+    def __str__(self):
+        return self.username
+
+    def get_full_name(self):
+        return self.username
+    
+    def get_short_name(self):
+        return self.username
+
+    def natural_key(self):
+        return (self.username,)
 
     meta = {'collection': 'users'}
 
