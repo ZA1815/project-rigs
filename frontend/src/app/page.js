@@ -1,12 +1,39 @@
-import Button from "@mui/material/Button";
+'use client';
+
 import Box from "@mui/material/Box";
+import { gql } from '@apollo/client'
+import { useQuery } from '@apollo/client/react';
+import RigCard from "@/components/RigCard";
+import { Typography } from "@mui/material";
+
+const GET_ALL_RIGS = gql`
+  query GetAllRigs {
+    allRigs {
+      id
+      title
+      description
+      imageUrl
+    }
+  }
+`;
 
 export default function Homepage() {
+  const {data, loading, error} = useQuery(GET_ALL_RIGS);
+
+  if (loading) {
+    return <Typography>Loading rigs...</Typography>
+  }
+
+  if (error) {
+    return <Typography>Error loading rigs: {error.message}</Typography>
+  }
+
   return (
     <Box sx={{p: 4}}>
-      <h1>Welcome to Project Rigs</h1>
-      <p>This is the homepage.</p>
-      <Button variant="contained" color="primary">Example Button</Button>
+      <h1>All Rigs:</h1>
+      {data.allRigs.map(rig => (
+        <RigCard key={rig.id} />
+      ))}
     </Box>
   )
 }
