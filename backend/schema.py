@@ -2,6 +2,7 @@ import graphene
 import graphql_jwt
 import jwt
 from django.conf import settings
+from datetime import datetime, timedelta
 from graphene_mongo import MongoengineObjectType
 from rigs.models import Rig as RigModel, User as UserModel
 from django.contrib.auth.hashers import make_password
@@ -65,6 +66,7 @@ class CreateRig(graphene.Mutation):
 
 class CreateUser(graphene.Mutation):
     user = graphene.Field(UserType)
+    token = graphene.String()
 
     class Arguments:
         username = graphene.String(required=True)
@@ -76,7 +78,15 @@ class CreateUser(graphene.Mutation):
         hashed_password = make_password(password)
         user = UserModel(username=username, email=email, password=hashed_password)
         user.save()
-        return CreateUser(user=user)
+
+        payload = {
+            'username': user.username,
+            'exp': datetime.utcnow() + timedelta(days=7)
+        }
+
+        token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+
+        return CreateUser(user=user, token=token)
 
 class Mutation(graphene.ObjectType):
     create_rig = CreateRig.Field()
