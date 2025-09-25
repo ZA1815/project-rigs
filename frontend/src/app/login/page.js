@@ -55,8 +55,8 @@ export default function LoginPage() {
     return (
         <Box component="form" onSubmit={onSubmitFunc} sx={{display: 'flex', flexDirection: 'column', gap: 2, width: '300px', margin: 'auto'}}>
             <Typography variant="h3">Login</Typography>
-            <TextField label="Username:" name="username" value={userData.username} onChange={onChangeFunc}/>
-            <TextField label="Password:" type="password" name="password" value={userData.password} onChange={onChangeFunc}/>
+            <TextField label="Username:" name="username" value={userData.username} onChange={onChangeFunc} required/>
+            <TextField label="Password:" type="password" name="password" value={userData.password} onChange={onChangeFunc} required/>
             {loading ? <Button type="submit" variant="contained" disabled>Submitting...</Button> : <Button type="submit" variant="contained" onSubmit={onSubmitFunc}>Submit</Button>}
             {error && (
                 <Typography color="error">Error: {error.message}</Typography>
