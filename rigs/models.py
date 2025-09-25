@@ -35,19 +35,19 @@ class User(mongoengine.Document):
 
     meta = {'collection': 'users'}
 
-class Comment(mongoengine.Document):
-    text = mongoengine.StringField(required=True, unique=True)
-    author = mongoengine.ReferenceField(User, required=True)
-    created_at = mongoengine.DateTimeField(default=datetime.utcnow)
-
-    meta = {'collection': 'comments'}
-
 class Rig(mongoengine.Document):
     title = mongoengine.StringField(required=True, max_length=200)
     image_url = mongoengine.StringField(required=True)
     description = mongoengine.StringField(max_length=500)
     author = mongoengine.ReferenceField(User, required=True)
-    comments = mongoengine.ListField(mongoengine.ReferenceField(Comment))
     created_at = mongoengine.DateTimeField(default=datetime.utcnow)
 
     meta = {'collection': 'rigs'}
+
+class Comment(mongoengine.Document):
+    text = mongoengine.StringField(required=True, unique=True)
+    author = mongoengine.ReferenceField(User, required=True)
+    rig = mongoengine.ReferenceField(Rig, required=True)
+    created_at = mongoengine.DateTimeField(default=datetime.utcnow)
+
+    meta = {'collection': 'comments'}
