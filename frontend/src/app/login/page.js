@@ -2,11 +2,8 @@
 
 import { useMutation } from "@apollo/client/react"
 import { gql } from "@apollo/client"
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { Box, Button, TextField, Typography} from "@mui/material";
 import { useState } from "react";
-import { Typography } from "@mui/material";
 import { useRouter } from "next/navigation";
 
 const LOGIN_MUTATION = gql`
