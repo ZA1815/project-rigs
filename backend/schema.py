@@ -4,7 +4,7 @@ import jwt
 from django.conf import settings
 from datetime import datetime, timedelta
 from graphene_mongo import MongoengineObjectType
-from rigs.models import Rig as RigModel, User as UserModel
+from rigs.models import Rig as RigModel, User as UserModel, Comment as CommentModel
 from django.contrib.auth.hashers import make_password
 
 def get_user_from_context(info):
@@ -29,11 +29,20 @@ def get_user_from_context(info):
 class RigType(MongoengineObjectType):
     class Meta:
         model = RigModel
+    
+    comments = graphene.List(lambda: CommentType)
+
+    def resolve_comments(self, info):
+        return CommentModel.objects.filter(rig=self)
 
 class UserType(MongoengineObjectType):
     class Meta:
         model = UserModel
         exclude_fields = ('password',)
+
+class CommentType(MongoengineObjectType):
+    class Meta:
+        model = CommentModel
 
 class Query(graphene.ObjectType):
     all_rigs = graphene.List(RigType)
@@ -88,8 +97,35 @@ class CreateUser(graphene.Mutation):
 
         return CreateUser(user=user, token=token)
 
+class CreateComment(graphene.Mutation):
+    comment = graphene.Field(CommentType)
+
+    class Arguments:
+        text = graphene.String(required=True)
+        rig_id = graphene.ID(required=True)
+    
+    @classmethod
+    def mutate(cls, root, info, text, rig_id):
+        user = get_user_from_context(info)
+
+        if not user:
+            raise Exception('Authentication required. Please provide a valid token.')
+
+        try: 
+            rig = RigModel.objects.get(id=rig_id)
+        except RigModel.DoesNotExist:
+            raise Exception ('Rig not found.')
+        
+        comment = CommentModel(text=text, author=user, rig=rig)
+        comment.save()
+
+        return CreateComment(comment=comment)
+
+
+
 class Mutation(graphene.ObjectType):
     create_rig = CreateRig.Field()
+    create_comment = CreateComment.Field()
     create_user = CreateUser.Field()
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
