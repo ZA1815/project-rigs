@@ -45,7 +45,7 @@ class Rig(mongoengine.Document):
     meta = {'collection': 'rigs'}
 
 class Comment(mongoengine.Document):
-    text = mongoengine.StringField(required=True, unique=True)
+    text = mongoengine.StringField(required=True)
     author = mongoengine.ReferenceField(User, required=True)
     rig = mongoengine.ReferenceField(Rig, required=True)
     created_at = mongoengine.DateTimeField(default=datetime.utcnow)
