@@ -40,7 +40,7 @@ class Query(graphene.ObjectType):
     rig_by_id = graphene.Field(RigType, id=graphene.ID(required=True))
 
     def resolve_all_rigs(root, info):
-        return RigModel.objects.all()
+        return RigModel.objects.all().order_by('-created_at')
     
     def resolve_rig_by_id(root, info, id):
         return RigModel.objects.get(id=id)
