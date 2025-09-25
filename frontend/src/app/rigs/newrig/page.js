@@ -40,7 +40,7 @@ export default function NewRigPage() {
                     imageUrl: rigData.imageUrl
                 },
                 refetchQueries: [
-                    { query: GET_ALL_RIGS}
+                    { query: GET_ALL_RIGS }
                 ]
             });
 
