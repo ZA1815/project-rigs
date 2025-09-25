@@ -6,7 +6,7 @@ import { useQuery } from '@apollo/client/react';
 import RigCard from "@/components/RigCard";
 import { Typography } from "@mui/material";
 
-const GET_ALL_RIGS = gql`
+export const GET_ALL_RIGS = gql`
   query GetAllRigs {
     allRigs {
       id
