@@ -1,5 +1,5 @@
 import mongoengine
-from datetime import datetime
+from datetime import datetime, timezone
 
 class User(mongoengine.Document):
     username = mongoengine.StringField(required=True, unique=True)
@@ -41,7 +41,7 @@ class Rig(mongoengine.Document):
     description = mongoengine.StringField(max_length=500)
     author = mongoengine.ReferenceField(User, required=True)
     rating = mongoengine.ListField(mongoengine.IntField(min_value=1, max_value=5))
-    created_at = mongoengine.DateTimeField(default=datetime.utcnow)
+    created_at = mongoengine.DateTimeField(default=lambda: datetime.now(timezone.utc))
 
     meta = {'collection': 'rigs'}
 
@@ -49,6 +49,6 @@ class Comment(mongoengine.Document):
     text = mongoengine.StringField(required=True)
     author = mongoengine.ReferenceField(User, required=True)
     rig = mongoengine.ReferenceField(Rig, required=True)
-    created_at = mongoengine.DateTimeField(default=datetime.utcnow)
+    created_at = mongoengine.DateTimeField(default=lambda: datetime.now(timezone.utc))
 
     meta = {'collection': 'comments'}
