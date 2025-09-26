@@ -144,7 +144,8 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:3000'
+    'http://localhost:3000',
+    'https://project-rigs.vercel.app/'
 ]
 
 DATABASES = {
