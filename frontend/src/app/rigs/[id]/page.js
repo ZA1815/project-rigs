@@ -159,18 +159,20 @@ export default function RigDetailPage({params}) {
 
     return (
         <Box sx={{p: 4}}>
-            <Link href={`/users/${dataRig.rigById.author.username}`}>
-                <Typography variant="h3">Posted by: {dataRig.rigById.author.username}</Typography>
+            <Link href={`/users/${dataRig.rigById.author.username}`} style={{textDecoration: 'none'}} sx={{p: 4}}>
+                <Typography variant="h3" sx={{color: 'text.secondary', '&:hover': {color: 'primary.main', textDecoration: 'underline'}, fontSize: '3rem', fontWeight: 500, pb: 4}}>Posted by: {dataRig.rigById.author.username}</Typography>
             </Link>
-            <RigCard key={rigId} rig={dataRig.rigById}/>
-            <Typography variant="h5">Rate:</Typography>
+            <Box sx={{height: '970px'}}>
+                <RigCard key={rigId} rig={dataRig.rigById}/>
+            </Box>
+            <Typography variant="h4" sx={{pb: 1, pt: 3}}>Rate:</Typography>
             <Rating name="simple-controlled" value={rating} onChange={onChangeRating}/>
-            <Typography>Average Rating: {dataRig.rigById.averageRating}</Typography>
+            <Typography variant="h6" sx={{pb: 4, pt: 1}}>Average Rating: {dataRig.rigById.averageRating}</Typography>
             <CommentsList comments={dataRig.rigById.comments}/>
             <Box component="form" onSubmit={onSubmitFunc} sx={{display: 'flex', flexDirection: 'column', gap: 2, width: '300px', margin: 'auto'}}>
                 <Typography variant="h3">Add a comment:</Typography>
                 <TextField label="Text:" value={commentText} onChange={onChangeComment} required/>
-                {loadingComment ? <Button type="submit" variant="contained" disabled>Submitting...</Button> : <Button type="submit" variant="contained">Submit</Button>}
+                {loadingComment ? <Button type="submit" variant="contained" sx={{height: '50px'}} disabled>Submitting...</Button> : <Button type="submit" variant="contained" sx={{height: '50px'}}>Submit</Button>}
                 {errorComment && (
                     <Typography color="error">Error: {errorComment.message}</Typography>
                 )}
