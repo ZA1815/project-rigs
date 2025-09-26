@@ -5,7 +5,7 @@ import CommentsList from "@/components/CommentsList";
 import { gql } from "@apollo/client";
 import { useMutation, useQuery } from "@apollo/client/react";
 import React, { useState } from "react";
-import { Box, Typography, TextField, Button, Rating } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
@@ -46,12 +46,16 @@ export default function UserDetailPage({params}) {
 
     return (
         <Box sx={{p: 4}}>
-            <h1>Rigs By {username}:</h1>
-            {data.rigsByAuthor.map(rig => (
-                <Link href={`rigs/${rig.id}`} key={rig.id} style={{textDecoration: 'none'}}>
-                    <RigCard rig={rig}/>
-                </Link>
-            ))}
+            <Typography variant='h4' gutterBottom sx={{alignSelf: 'center', mb: 10}}>Rigs by: {username}</Typography>
+            <Grid container spacing={10} sx={{maxWidth: 2400, ml: 50}}>
+                {data.rigsByAuthor.map(rig => (
+                    <Grid item key={rig.id} xs={12} sm={6} md={4}>
+                        <Link href={`rigs/${rig.id}`} key={rig.id} style={{textDecoration: 'none'}}>
+                            <RigCard rig={rig}/>
+                        </Link>
+                    </Grid>
+                ))}
+            </Grid>
         </Box>
     );
 }
