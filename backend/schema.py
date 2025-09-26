@@ -29,6 +29,19 @@ def get_user_from_context(info):
 class RigType(MongoengineObjectType):
     class Meta:
         model = RigModel
+        exclude_fields = ('rating')
+
+    rating = graphene.List(graphene.Int)
+    average_rating = graphene.Float()
+
+    def resolve_rating(self, info):
+        return self.rating
+    
+    def resolve_average_rating(self, info):
+        if not self.rating:
+            return 0
+        average = sum(self.rating) / len(self.rating)
+        return round(average, 1)
     
     comments = graphene.List(lambda: CommentType)
 
@@ -121,12 +134,43 @@ class CreateComment(graphene.Mutation):
 
         return CreateComment(comment=comment)
 
+class SubmitRating(graphene.Mutation):
+    rig = graphene.Field(RigType)
+
+    class Arguments:
+        rig_id = graphene.ID(required=True)
+        rating = graphene.Int(required=True)
+
+    @classmethod
+    def mutate(cls, root, info, rig_id, rating):
+        user = get_user_from_context(info)
+
+        if not user:
+            raise Exception('Authentication required. Please provide a valid token.')
+        
+        try:
+            rig = RigModel.objects.get(id=rig_id)
+        except RigModel.DoesNotExist:
+            raise Exception('Rig not found.')
+
+        if rating < 1 or rating > 5:
+            raise Exception('Rating must be between 1 and 5.')
+        
+        if rig.rating is None:
+            rig.rating = []
+        
+        rig.rating.append(rating)
+        rig.save()
+
+        return SubmitRating(rig=rig)
+
 
 
 class Mutation(graphene.ObjectType):
     create_rig = CreateRig.Field()
     create_comment = CreateComment.Field()
     create_user = CreateUser.Field()
+    submit_rating = SubmitRating.Field()
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()
