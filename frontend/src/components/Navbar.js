@@ -11,7 +11,7 @@ export default function Navbar() {
     return (
         <AppBar position="static">
             <Toolbar>
-                <Typography variant="h6" sx={{flexGrow: 1}}>
+                <Typography variant="h5" sx={{flexGrow: 1}}>
                     <Link href="/" style={{textDecoration: 'none', color: 'inherit'}}>
                         Project Rigs
                     </Link>
