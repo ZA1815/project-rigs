@@ -40,6 +40,7 @@ class Rig(mongoengine.Document):
     image_url = mongoengine.StringField(required=True)
     description = mongoengine.StringField(max_length=500)
     author = mongoengine.ReferenceField(User, required=True)
+    rating = mongoengine.ListField(mongoengine.IntField(min_value=1, max_value=5))
     created_at = mongoengine.DateTimeField(default=datetime.utcnow)
 
     meta = {'collection': 'rigs'}
