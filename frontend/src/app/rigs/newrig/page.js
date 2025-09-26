@@ -1,17 +1,22 @@
 'use client';
 
+import { jwtDecode } from 'jwt-decode';
 import { useMutation } from "@apollo/client/react";
 import { gql } from "@apollo/client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Box, Button, TextField, Typography} from "@mui/material";
 import {GET_ALL_RIGS} from "@/app/page"
+import {GET_RIGS_BY_AUTHOR} from "@/app/users/[username]/page"
 
 const NEW_RIG_MUTATION = gql`
     mutation CreateRig($title: String!, $description: String, $imageUrl: String!) {
         createRig(title: $title, description: $description, imageUrl: $imageUrl) {
             rig {
                 id
+                author {
+                    username
+                }
             }
         }
     }
@@ -32,6 +37,27 @@ export default function NewRigPage() {
     const onSubmitFunc = async (e) => {
         e.preventDefault();
 
+        const token = localStorage.getItem('authToken')
+        let username = null;
+
+        if (token) {
+            try {
+                const decodedToken = jwtDecode(token);
+                username = decodedToken.username;
+            }
+            catch (err) {
+                console.error('Error decoding token:', err);
+                router.push('/login');
+                return;
+            }
+        }
+
+        if (!username) {
+            console.error('Username could not be found in token.');
+            router.push('/login');
+            return;
+        }
+
         try {
             const result = await createNewRig({
                 variables: {
@@ -40,8 +66,17 @@ export default function NewRigPage() {
                     imageUrl: rigData.imageUrl
                 },
                 refetchQueries: [
-                    { query: GET_ALL_RIGS }
-                ]
+                    {
+                        query: GET_ALL_RIGS
+                    },
+                    {
+                        query: GET_RIGS_BY_AUTHOR,
+                        variables: {
+                            username: username
+                        }
+                    }
+                ],
+                awaitRefetchQueries: true
             });
 
             if (result.data) {

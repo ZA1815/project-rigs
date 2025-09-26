@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "@apollo/client/react";
 import React, { useState } from "react";
 import { Box, Typography, TextField, Button, Rating } from "@mui/material";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const GET_RIG_BY_ID = gql`
     query GetRigById($rigId: ID!) {
@@ -15,6 +16,9 @@ const GET_RIG_BY_ID = gql`
             description
             imageUrl
             createdAt
+            author {
+                username
+            }
             comments {
                 id
                 text
@@ -84,7 +88,7 @@ export default function RigDetailPage({params}) {
                 variables: {
                     rigId
                 }
-            }
+            },
         ],
         awaitRefetchQueries: true
     })
@@ -155,6 +159,9 @@ export default function RigDetailPage({params}) {
 
     return (
         <Box sx={{p: 4}}>
+            <Link href={`/users/${dataRig.rigById.author.username}`}>
+                <Typography variant="h3">Posted by: {dataRig.rigById.author.username}</Typography>
+            </Link>
             <RigCard key={rigId} rig={dataRig.rigById}/>
             <Typography variant="h5">Rate:</Typography>
             <Rating name="simple-controlled" value={rating} onChange={onChangeRating}/>
