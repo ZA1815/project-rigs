@@ -9,7 +9,7 @@ import { Box, Typography, Grid } from "@mui/material";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-const GET_RIGS_BY_AUTHOR = gql`
+export const GET_RIGS_BY_AUTHOR = gql`
     query GetRigsByAuthor($username: String!) {
         rigsByAuthor(username: $username) {
             id
