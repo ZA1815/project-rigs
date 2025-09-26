@@ -3,8 +3,6 @@ __pycache__/
 
 venv/
 
-backend/settings.py
-
 mydb
 
 db.sqlite3
