@@ -2,7 +2,7 @@ import {ApolloClient, InMemoryCache, HttpLink, ApolloLink} from '@apollo/client'
 import {SetContextLink} from '@apollo/client/link/context';
 
 const httpLink = new HttpLink({
-    uri: 'https://project-rigs-backend.onrender.com'
+    uri: 'https://project-rigs-backend.onrender.com/graphql'
 });
 
 const authLink = new SetContextLink((request, previousContext) => {
