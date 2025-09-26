@@ -60,12 +60,20 @@ class CommentType(MongoengineObjectType):
 class Query(graphene.ObjectType):
     all_rigs = graphene.List(RigType)
     rig_by_id = graphene.Field(RigType, id=graphene.ID(required=True))
+    rigs_by_author = graphene.List(RigType, username=graphene.String(required=True))
 
     def resolve_all_rigs(root, info):
         return RigModel.objects.all().order_by('-created_at')
     
     def resolve_rig_by_id(root, info, id):
         return RigModel.objects.get(id=id)
+
+    def resolve_rigs_by_author(root, info, username):
+        try:
+            user = UserModel.objects.get(username=username)
+            return RigModel.objects.filter(author=user).order_by('-created_at')
+        except user.DoesNotExist:
+            return []
 
 class CreateRig(graphene.Mutation):
     rig = graphene.Field(RigType)
