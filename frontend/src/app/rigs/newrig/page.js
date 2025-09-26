@@ -96,12 +96,12 @@ export default function NewRigPage() {
     }
 
     return (
-        <Box component="form" onSubmit={onSubmitFunc} sx={{display: 'flex', flexDirection: 'column', gap: 2, width: '300px', margin: 'auto'}}>
-            <Typography variant="h3">Create a new Rig</Typography>
+        <Box component="form" onSubmit={onSubmitFunc} sx={{p: 4, display: 'flex', flexDirection: 'column', gap: 2, width: '500px', margin: 'auto', alignItems: 'stretch'}}>
+            <Typography variant="h3">Create a New Rig</Typography>
             <TextField label="Title:" name="title" value={rigData.title} onChange={onChangeFunc} required/>
             <TextField label="Description (optional):" name="description" value={rigData.description} onChange={onChangeFunc}/>
             <TextField label="Image URL:" name="imageUrl" value={rigData.imageUrl} onChange={onChangeFunc} required/>
-            {loading ? <Button type="submit" variant="contained" disabled>Submitting...</Button> : <Button type="submit" variant="contained" onSubmit={onSubmitFunc}>Submit</Button>}
+            {loading ? <Button type="submit" variant="contained" sx={{height: '50px'}} disabled>Submitting...</Button> : <Button type="submit" variant="contained" onSubmit={onSubmitFunc} sx={{height: '50px'}}>Submit</Button>}
             {error && (
                 <Typography color="error">Error: {error.message}</Typography>
             )}
