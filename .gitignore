@@ -5,6 +5,8 @@ venv/
 
 backend/settings.py
 
+mydb
+
 db.sqlite3
 
 .DS_Store
