@@ -162,7 +162,7 @@ export default function RigDetailPage({params}) {
             <Link href={`/users/${dataRig.rigById.author.username}`} style={{textDecoration: 'none'}} sx={{p: 4}}>
                 <Typography variant="h3" sx={{color: 'text.secondary', '&:hover': {color: 'primary.main', textDecoration: 'underline'}, fontSize: '3rem', fontWeight: 500, pb: 4}}>Posted by: {dataRig.rigById.author.username}</Typography>
             </Link>
-            <Box sx={{height: '970px'}}>
+            <Box sx={{margin: 'auto', height: '970px', width: '55%'}}>
                 <RigCard key={rigId} rig={dataRig.rigById}/>
             </Box>
             <Typography variant="h4" sx={{pb: 1, pt: 3}}>Rate:</Typography>

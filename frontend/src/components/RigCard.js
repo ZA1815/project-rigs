@@ -6,7 +6,7 @@ export default function RigCard({rig}) {
             <CardContent sx={{flexGrow: 1, p: 4}}>
                 <Typography variant="h5" fontWeight='bold' gutterBottom>{rig.title}</Typography>
                 <Typography variant="body2" fontWeight="semibold" color="text.secondary" paddingBottom="10px">{rig.description}</Typography>
-                <CardMedia component="img" height="300" image={rig.imageUrl} alt={rig.title}/>
+                <CardMedia component="img" height="800" sx={{objectFit: 'contain'}} image={rig.imageUrl} alt={rig.title}/>
             </CardContent>
         </Card>
     );
